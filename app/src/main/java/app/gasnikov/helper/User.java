@@ -7,7 +7,6 @@ import android.os.Parcelable;
 public class User implements Parcelable {
     public String fullname,email,blood_type,rh_factor,cd,ar,id;
     public int number_of_calls;
-    public int a;
     public User(){
 
     }
