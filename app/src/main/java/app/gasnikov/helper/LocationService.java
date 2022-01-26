@@ -17,7 +17,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
@@ -29,7 +29,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -102,7 +102,7 @@ public class LocationService extends Service {
                         @Override
                         public void onLocationResult(LocationResult locationResult) {
 
-                            Log.d(TAG, "onLocationResult: got location result.");
+                            Log.d(TAG, "got location result.");
 
                             Location location = locationResult.getLastLocation();
                             if (location != null && FirebaseAuth.getInstance().getCurrentUser()!=null) {

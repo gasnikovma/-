@@ -13,9 +13,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,9 +32,10 @@ import app.gasnikov.helper.R;
 
 public class First extends Fragment {
     private FragmentActivity myContext;
-    private static final int PERMISSIONS_REQUEST_ENABLE_GPS =12345 ;
+
 
     CardView[] card = new CardView[6];
+    TextView[]textViews=new TextView[6];
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,13 +46,21 @@ public class First extends Fragment {
         card[3]=(CardView)v.findViewById(R.id.c4);
         card[4]=(CardView)v.findViewById(R.id.c5);
         card[5]=(CardView)v.findViewById(R.id.c6);
+        textViews[0]=(TextView)v.findViewById(R.id.textView3);
+        textViews[1]=(TextView)v.findViewById(R.id.textView4);
+        textViews[2]=(TextView)v.findViewById(R.id.textView5);
+        textViews[3]=(TextView)v.findViewById(R.id.textView6);
+        textViews[4]=(TextView)v.findViewById(R.id.textView7);
+        textViews[5]=(TextView)v.findViewById(R.id.textView8);
         for(int i=0;i<6;i++) {
 
+            int finalI = i;
             card[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    int j= finalI;
                     Intent intent = new Intent(getActivity(), Map_Activity.class);
+                    intent.putExtra("type",textViews[j].getText());
                     startActivity(intent);
                 }
             });
@@ -58,13 +70,10 @@ public class First extends Fragment {
         return v;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
-        /*final LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-            buildAlertMessageNoGps();
-        }*/
     }
 
 
@@ -74,17 +83,5 @@ public class First extends Fragment {
         myContext=(FragmentActivity) context;
 
     }
-   /* private void buildAlertMessageNoGps(){
-        final AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
-        builder.setMessage("This application requires GPS to work properly, do you want to enable it?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent gps=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(gps,PERMISSIONS_REQUEST_ENABLE_GPS);
-            }
-        });
-        final AlertDialog alertDialog=builder.create();
-        alertDialog.show();
-    }*/
 
 }

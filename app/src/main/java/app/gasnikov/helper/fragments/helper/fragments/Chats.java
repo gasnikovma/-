@@ -60,11 +60,13 @@ public class Chats extends Fragment {
                 ul.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Message message = dataSnapshot.getValue(Message.class);
-                    if ((message.getSender().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) && !ul.contains(message.getReceiver())) {
-                        ul.add(message.getReceiver());
-                    }
-                    if (message.getReceiver().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())&&!ul.contains(message.getSender())) {
-                        ul.add(message.getSender());
+                    if(message!=null) {
+                        if ((message.getSender().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) && !ul.contains(message.getReceiver())) {
+                            ul.add(message.getReceiver());
+                        }
+                        if (message.getReceiver().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && !ul.contains(message.getSender())) {
+                            ul.add(message.getSender());
+                        }
                     }
                 }
                 read();

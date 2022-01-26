@@ -3,7 +3,6 @@ package app.gasnikov.helper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 public class User_Data extends AppCompatActivity {

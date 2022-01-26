@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.service.autofill.UserData;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,15 +20,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
-import androidx.fragment.app.FragmentTransaction;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.DataSnapshot;
@@ -53,7 +51,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 public class Message_Activity extends AppCompatActivity {
-    private static final String TAG = "43423";
+
     private TextView username;
     FirebaseDatabase db = FirebaseDatabase.getInstance();
 private Toolbar toolbar;
@@ -68,7 +66,8 @@ private RecyclerView recyclerView;
 ValueEventListener seen;
 ApiService apiService;
 public boolean notify1 =false;
-public LocationModel s,d;
+public LocationModel s;
+public Incident d;
 public User user1;
 
 
@@ -123,8 +122,6 @@ public User user1;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user1=snapshot.getValue(User.class);
-
-
             }
 
             @Override
@@ -132,16 +129,39 @@ public User user1;
 
             }
         });
-        db.getReference("Incidents").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        db.getReference("Incidents").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
-                }
-                else {
-                  d=task.getResult().getValue(LocationModel.class);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.getValue()!=null){
+                    d=snapshot.getValue(Incident.class);
 
                 }
+                else {
+                    db.getReference("Incidents").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            if(snapshot.getValue()!=null){
+                                d=snapshot.getValue(Incident.class);
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }
+
+
+        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -365,10 +385,11 @@ public User user1;
             case R.id.chatroom_map:{
                         Intent intent=new Intent(Message_Activity.this,MapsActivity.class);
                         intent.putExtra("Loc", new LocationModel(s.getLat(),s.getLng()));
-                        intent.putExtra("Inc",new LocationModel(d.getLat(),d.getLng()));
+                        if(d!=null) {
+                            intent.putExtra("Inc", new Incident(d.getLocationModel(),d.getType()));
+                            intent.putExtra(Incident.class.getSimpleName(), d);
+                        }
                 intent.putExtra(LocationModel.class.getSimpleName(), s);
-                intent.putExtra(LocationModel.class.getSimpleName(),d);
-                Log.d(TAG,String.valueOf("Aleksey"+ " "+d.getLat()+ " "+ d.getLng()));
                 intent.putExtra("name",fn);
                 intent.putExtra("id",uid);
                 startActivity(intent);
@@ -382,12 +403,7 @@ public User user1;
                 startActivity(intent);
                 return true;
             }
-            case R.id.chatroom_leave:{
-                Intent intent=new Intent(Message_Activity.this,MainActivity.class);
-                startActivity(intent);
 
-                return true;
-            }
             default:{
                 return super.onOptionsItemSelected(item);
             }

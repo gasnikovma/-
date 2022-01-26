@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-import java.util.ArrayList;
+
 
 public class Registration extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mauth;
@@ -111,7 +111,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                  id= mauth.getCurrentUser().getUid();
 
 
-                               User user = new User(nfullname, nemail, nbt, nrh, ncd, nar,id);
+                               User user = new User(nfullname, nemail, nbt, nrh, ncd, nar,id,0);
 
 
                                 db.getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {

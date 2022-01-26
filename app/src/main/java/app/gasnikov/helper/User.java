@@ -3,16 +3,15 @@ package app.gasnikov.helper;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class User implements Parcelable {
     public String fullname,email,blood_type,rh_factor,cd,ar,id;
-    public boolean isrescued;
+    public int number_of_calls;
     public User(){
 
     }
-    public User(String fullname, String email,String blood_type,String rh_factor,String cd,String ar,String id,boolean isrescued){
+
+    public User(String fullname, String email,String blood_type,String rh_factor,String cd,String ar,String id,int number){
         this.blood_type=blood_type;
         this.fullname=fullname;
         this.email=email;
@@ -20,7 +19,18 @@ public class User implements Parcelable {
         this.rh_factor=rh_factor;
         this.cd=cd;
         this.ar=ar;
-        this.isrescued=isrescued;
+        number_of_calls=number;
+
+    }
+    public User(String fullname, String email,String blood_type,String rh_factor,String cd,String ar,String id){
+        this.blood_type=blood_type;
+        this.fullname=fullname;
+        this.email=email;
+        this.id=id;
+        this.rh_factor=rh_factor;
+        this.cd=cd;
+        this.ar=ar;
+
 
     }
 
@@ -33,6 +43,7 @@ public class User implements Parcelable {
         cd = in.readString();
         ar = in.readString();
         id = in.readString();
+        number_of_calls=in.readInt();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -113,5 +124,13 @@ public class User implements Parcelable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getNumber_of_calls() {
+        return number_of_calls;
+    }
+
+    public void setNumber_of_calls(int number_of_calls) {
+        this.number_of_calls = number_of_calls;
     }
 }

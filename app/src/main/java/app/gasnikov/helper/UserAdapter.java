@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
-import app.gasnikov.helper.fragments.helper.fragments.Chats;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MViewHolder> {
     private Context context;

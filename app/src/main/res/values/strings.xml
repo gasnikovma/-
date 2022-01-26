@@ -27,6 +27,7 @@
     <string name="accident">Road accident</string>
     <string name="fault">Fainting</string>
     <string name="heart">Heart attack</string>
+    <string name="finish">End call</string>
     <string name="motto">Dont leave each other in trouble</string>
     <string name="bone">Body injury</string>
     <string name="tree">Tree fall</string>

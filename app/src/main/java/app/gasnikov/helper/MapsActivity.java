@@ -25,7 +25,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final String TAG ="qweq3eqd" ;
     private GoogleMap mMap;
-    private LocationModel locationModel,incident1;
+    private LocationModel locationModel;
+    private Incident incident1;
     private String userid,userfn;
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     private Handler mHandler = new Handler();
@@ -38,14 +39,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-          locationModel = (LocationModel) getIntent().getParcelableExtra("Loc");
-          incident1=(LocationModel)getIntent().getParcelableExtra("Inc");
         Bundle arguments = getIntent().getExtras();
-        if(arguments!=null){
+        if(arguments!=null) {
+            locationModel = (LocationModel) getIntent().getParcelableExtra("Loc");
+            incident1=(Incident)getIntent().getParcelableExtra("Inc");
             locationModel = arguments.getParcelable(LocationModel.class.getSimpleName());
-            incident1=arguments.getParcelable(LocationModel.class.getSimpleName());
-            userfn=arguments.getString("name");
-            userid=arguments.getString("id");
+          incident1=arguments.getParcelable(Incident.class.getSimpleName());
+            userfn = arguments.getString("name");
+            userid = arguments.getString("id");
+
         }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -67,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void startUserLocationsRunnable(){
-        Log.d(TAG, "startUserLocationsRunnable: starting runnable for retrieving updated locations.");
+
         mHandler.postDelayed(mRunnable = new Runnable() {
             @Override
             public void run() {
@@ -96,7 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                             Log.d(TAG,String.valueOf("Hello:" + updatedUserLocation.getGeo_point().getLat()+ "   "+ updatedUserLocation.getGeo_point().getLng()));
                             marker1=mMap.addMarker(new MarkerOptions().position(updatedLatLng).title(userfn));
-                            mMap.animateCamera(CameraUpdateFactory.newLatLng(updatedLatLng));
+
 
 
                         }
@@ -120,12 +122,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng sydney = new LatLng(locationModel.getLat(), locationModel.getLng());
-        if(incident1!=null) {
-            LatLng incident = new LatLng(incident1.getLat(), incident1.getLng());
-            marker=mMap.addMarker(new MarkerOptions().position(incident));
+        if (incident1 != null) {
+            LatLng incident = new LatLng(incident1.getLocationModel().getLat(), incident1.getLocationModel().getLng());
+            marker = mMap.addMarker(new MarkerOptions().position(incident).title(incident1.getType()));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(incident));
         }
-       marker1= mMap.addMarker(new MarkerOptions().position(sydney).title(userfn));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,10));
+        if (locationModel != null) {
+            LatLng sydney = new LatLng(locationModel.getLat(), locationModel.getLng());
+            marker1 = mMap.addMarker(new MarkerOptions().position(sydney).title(userfn));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 10));
+        }
     }
 }

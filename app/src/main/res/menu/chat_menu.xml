@@ -10,10 +10,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/chatroom_leave"
-        android:title="@string/leavechat"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/user_data"
         android:title="@string/data"
         app:showAsAction="never" />

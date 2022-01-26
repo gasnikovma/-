@@ -36,12 +36,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        String sented=remoteMessage.getData().get("sented");
         String user2=remoteMessage.getData().get("user");
         SharedPreferences preferences=getSharedPreferences("PREFERS",MODE_PRIVATE);
         String curuser=preferences.getString("curuser","nobody");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user!=null /*&& sented.equals(user.getUid())*/) {
+        if(user!=null) {
             if (!curuser.equals(user2)) {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 String CHANNEL_ID = "my_channel_01";
